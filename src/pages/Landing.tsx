@@ -9,6 +9,7 @@ import { Features } from "@/components/landing/Features";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
 import { Testimonials } from "@/components/landing/Testimonials";
+import { FAQ } from "@/components/landing/FAQ";
 import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
 
@@ -23,6 +24,7 @@ export default function Landing() {
         <div id="how-it-works"><HowItWorks /></div>
         <div id="pricing"><Pricing /></div>
         <div id="testimonials"><Testimonials /></div>
+        <div id="faq"><FAQ /></div>
         <CTA />
       </main>
       <Footer />
