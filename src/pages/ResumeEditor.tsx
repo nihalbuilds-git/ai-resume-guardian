@@ -8,6 +8,8 @@ import { ExperienceForm } from "@/components/editor/ExperienceForm";
 import { EducationForm } from "@/components/editor/EducationForm";
 import { SkillsForm } from "@/components/editor/SkillsForm";
 import { ProjectsForm } from "@/components/editor/ProjectsForm";
+import { DesignControls } from "@/components/editor/DesignControls";
+import { PDFExportButton } from "@/components/editor/PDFExportButton";
 import { ResumePreview } from "@/components/editor/ResumePreview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
