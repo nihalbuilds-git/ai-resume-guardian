@@ -177,7 +177,16 @@ export default function ResumeEditor() {
             </button>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <AICreditsIndicator />
+          <ATSChecker data={localData} />
+          <TailorResume
+            data={localData}
+            onApplySummary={(s) => updateField("summary", s)}
+            onAddSkills={(skills) => updateField("skills", [...localData.skills, ...skills.filter((s) => !localData.skills.includes(s))])}
+          />
+          <CoverLetterModal data={localData} />
+          <div className="w-px h-6 bg-border" />
           <Button size="icon" variant="ghost" onClick={undo} disabled={historyIndex <= 0} title="Undo">
             <Undo2 className="h-4 w-4" />
           </Button>
