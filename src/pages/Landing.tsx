@@ -24,6 +24,7 @@ export default function Landing() {
         <div id="how-it-works"><HowItWorks /></div>
         <div id="pricing"><Pricing /></div>
         <div id="testimonials"><Testimonials /></div>
+        <div id="faq"><FAQ /></div>
         <CTA />
       </main>
       <Footer />
