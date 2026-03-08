@@ -4,11 +4,14 @@ import { DashboardSidebar } from "@/components/DashboardSidebar";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { useAuth } from "@/contexts/AuthContext";
 import { useResumes, useCreateResume, useDeleteResume } from "@/hooks/use-resumes";
+import { usePlanLimits } from "@/hooks/use-plan-limits";
+import { UpgradeModal } from "@/components/UpgradeModal";
 import { FileText, Plus, Pencil, Trash2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
+import { useState } from "react";
 
 export default function Dashboard() {
   const { profile } = useAuth();
@@ -16,8 +19,16 @@ export default function Dashboard() {
   const { data: resumes, isLoading } = useResumes();
   const createResume = useCreateResume();
   const deleteResume = useDeleteResume();
+  const { canCreateResume } = usePlanLimits();
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState<"resume_limit" | "ai_credits" | "template" | "feature">("resume_limit");
 
   const handleCreate = async () => {
+    if (!canCreateResume) {
+      setUpgradeReason("resume_limit");
+      setShowUpgrade(true);
+      return;
+    }
     const resume = await createResume.mutateAsync("modern");
     navigate(`/dashboard/editor/${resume.id}`);
   };
