@@ -146,7 +146,7 @@ export function Hero() {
               </div>
 
               {/* Right panel — resume preview */}
-              <div className="flex-1 flex items-center justify-center bg-muted/40 p-6">
+              <div className="flex-1 relative flex items-center justify-center bg-muted/40 p-6">
                 <div className="w-full max-w-[300px] bg-card rounded-lg shadow-xl border border-border p-6 space-y-3.5">
                   {/* Header */}
                   <div className="text-center space-y-1 pb-2 border-b border-border">
@@ -212,6 +212,45 @@ export function Hero() {
                     </div>
                   </div>
                 </div>
+
+                {/* Floating AI chat bubble */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.2 }}
+                  className="absolute bottom-4 right-4 md:bottom-6 md:right-6"
+                >
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="bg-primary text-primary-foreground rounded-2xl rounded-br-sm px-4 py-2.5 shadow-lg shadow-primary/25 max-w-[180px]"
+                  >
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Sparkles className="h-3 w-3" />
+                      <span className="text-[10px] font-bold">AI Assistant</span>
+                    </div>
+                    <p className="text-[9px] leading-relaxed opacity-90">
+                      ✨ I improved 3 bullet points and boosted your ATS score to 92!
+                    </p>
+                  </motion.div>
+                </motion.div>
+
+                {/* Floating score indicator */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 1.5 }}
+                  className="absolute top-4 right-4 md:top-6 md:right-6"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="bg-card border border-border rounded-xl px-3 py-2 shadow-lg"
+                  >
+                    <p className="text-[8px] text-muted-foreground font-medium">ATS SCORE</p>
+                    <p className="text-lg font-extrabold text-primary leading-none">92</p>
+                  </motion.div>
+                </motion.div>
               </div>
             </div>
           </div>
