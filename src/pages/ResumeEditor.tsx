@@ -238,6 +238,9 @@ export default function ResumeEditor() {
                     onChange={(v) => updateField("projects", v)}
                   />
                 </TabsContent>
+                <TabsContent value="design">
+                  <DesignControls data={localData} onUpdate={updateField} />
+                </TabsContent>
               </Tabs>
             </div>
           </ScrollArea>
