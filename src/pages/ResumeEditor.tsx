@@ -181,6 +181,7 @@ export default function ResumeEditor() {
               <ZoomIn className="h-3.5 w-3.5" />
             </Button>
           </div>
+          <PDFExportButton data={localData} />
           <Button size="sm" onClick={handleSave} disabled={saving}>
             {saving ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : <Save className="mr-1 h-3.5 w-3.5" />}
             {saving ? "Saving..." : "Save"}
