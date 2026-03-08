@@ -152,6 +152,7 @@ export default function Dashboard() {
           </main>
         </div>
       </div>
+      <UpgradeModal open={showUpgrade} onOpenChange={setShowUpgrade} reason={upgradeReason} />
     </SidebarProvider>
   );
 }
