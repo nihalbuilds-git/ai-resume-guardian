@@ -11,6 +11,10 @@ import { ProjectsForm } from "@/components/editor/ProjectsForm";
 import { DesignControls } from "@/components/editor/DesignControls";
 import { PDFExportButton } from "@/components/editor/PDFExportButton";
 import { ResumePreview } from "@/components/editor/ResumePreview";
+import { ATSChecker } from "@/components/ai/ATSChecker";
+import { TailorResume } from "@/components/ai/TailorResume";
+import { CoverLetterModal } from "@/components/ai/CoverLetterModal";
+import { AICreditsIndicator } from "@/components/ai/AICreditsIndicator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -173,7 +177,16 @@ export default function ResumeEditor() {
             </button>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <AICreditsIndicator />
+          <ATSChecker data={localData} />
+          <TailorResume
+            data={localData}
+            onApplySummary={(s) => updateField("summary", s)}
+            onAddSkills={(skills) => updateField("skills", [...localData.skills, ...skills.filter((s) => !localData.skills.includes(s))])}
+          />
+          <CoverLetterModal data={localData} />
+          <div className="w-px h-6 bg-border" />
           <Button size="icon" variant="ghost" onClick={undo} disabled={historyIndex <= 0} title="Undo">
             <Undo2 className="h-4 w-4" />
           </Button>
