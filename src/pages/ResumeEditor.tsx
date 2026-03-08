@@ -125,6 +125,10 @@ export default function ResumeEditor() {
     await updateResume.mutateAsync({
       id,
       title: localData.title,
+      template: localData.template,
+      color_theme: localData.color_theme,
+      font_pair: localData.font_pair,
+      spacing: localData.spacing,
       summary: localData.summary,
       personal_info: localData.personal_info as any,
       experience: localData.experience as any,
