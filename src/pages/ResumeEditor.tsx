@@ -196,12 +196,13 @@ export default function ResumeEditor() {
           <ScrollArea className="h-full">
             <div className="p-4">
               <Tabs defaultValue="personal" className="w-full">
-                <TabsList className="w-full grid grid-cols-5 mb-4">
+                <TabsList className="w-full grid grid-cols-6 mb-4">
                   <TabsTrigger value="personal" className="text-xs">Personal</TabsTrigger>
                   <TabsTrigger value="experience" className="text-xs">Experience</TabsTrigger>
                   <TabsTrigger value="education" className="text-xs">Education</TabsTrigger>
                   <TabsTrigger value="skills" className="text-xs">Skills</TabsTrigger>
                   <TabsTrigger value="projects" className="text-xs">Projects</TabsTrigger>
+                  <TabsTrigger value="design" className="text-xs">Design</TabsTrigger>
                 </TabsList>
                 <TabsContent value="personal" className="space-y-6">
                   <PersonalInfoForm
