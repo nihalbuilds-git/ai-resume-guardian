@@ -73,82 +73,143 @@ export function Hero() {
           className="mt-14 mx-auto max-w-5xl"
         >
           <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/10 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/50">
-              <div className="w-3 h-3 rounded-full bg-destructive" />
-              <div className="w-3 h-3 rounded-full bg-warning" />
-              <div className="w-3 h-3 rounded-full bg-success" />
+            {/* Title bar */}
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/60">
+              <div className="w-3 h-3 rounded-full bg-[hsl(0,70%,60%)]" />
+              <div className="w-3 h-3 rounded-full bg-[hsl(40,80%,60%)]" />
+              <div className="w-3 h-3 rounded-full bg-[hsl(140,60%,50%)]" />
               <span className="ml-2 text-xs text-muted-foreground font-medium">ResumeAI Editor</span>
             </div>
-            <div className="flex h-[340px] md:h-[420px]">
-              {/* Left panel */}
-              <div className="w-2/5 border-r border-border p-5 space-y-3.5 hidden md:block overflow-hidden">
-                <div className="h-3.5 w-28 rounded bg-primary/30 font-medium" />
-                <div className="space-y-2">
-                  <div className="h-9 rounded-md bg-muted/80 border border-border" />
-                  <div className="h-9 rounded-md bg-muted/80 border border-border" />
+
+            <div className="flex h-[360px] md:h-[440px]">
+              {/* Left panel — form editor */}
+              <div className="w-2/5 border-r border-border p-5 space-y-4 hidden md:block overflow-hidden bg-background">
+                {/* Section: Personal Info */}
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold text-primary tracking-wide uppercase">Personal Info</p>
+                </div>
+                <div className="space-y-2.5">
+                  <div className="h-9 rounded-md bg-muted border border-border flex items-center px-3">
+                    <span className="text-xs text-muted-foreground">John Anderson</span>
+                  </div>
+                  <div className="h-9 rounded-md bg-muted border border-border flex items-center px-3">
+                    <span className="text-xs text-muted-foreground">john@example.com</span>
+                  </div>
                   <div className="flex gap-2">
-                    <div className="h-9 flex-1 rounded-md bg-muted/80 border border-border" />
-                    <div className="h-9 flex-1 rounded-md bg-muted/80 border border-border" />
+                    <div className="h-9 flex-1 rounded-md bg-muted border border-border flex items-center px-3">
+                      <span className="text-xs text-muted-foreground">Software Engineer</span>
+                    </div>
+                    <div className="h-9 w-28 rounded-md bg-muted border border-border flex items-center px-3">
+                      <span className="text-xs text-muted-foreground">San Francisco</span>
+                    </div>
                   </div>
                 </div>
-                <div className="h-3.5 w-24 rounded bg-primary/30 mt-2" />
-                <div className="h-[72px] rounded-md bg-muted/80 border border-border" />
-                <div className="h-3.5 w-20 rounded bg-primary/30 mt-2" />
+
+                {/* Section: Summary */}
+                <div className="space-y-1 pt-1">
+                  <p className="text-[11px] font-semibold text-primary tracking-wide uppercase">Summary</p>
+                </div>
+                <div className="h-[68px] rounded-md bg-muted border border-border p-2.5">
+                  <span className="text-[10px] text-muted-foreground leading-relaxed">
+                    Experienced software engineer with 5+ years building scalable web applications…
+                  </span>
+                </div>
+
+                {/* Section: Experience */}
+                <div className="space-y-1 pt-1">
+                  <p className="text-[11px] font-semibold text-primary tracking-wide uppercase">Experience</p>
+                </div>
                 <div className="space-y-2">
-                  <div className="h-9 rounded-md bg-muted/80 border border-border" />
+                  <div className="h-9 rounded-md bg-muted border border-border flex items-center px-3">
+                    <span className="text-xs text-muted-foreground">Senior Dev · TechCorp</span>
+                  </div>
                   <div className="flex gap-2">
-                    <div className="h-9 flex-1 rounded-md bg-muted/80 border border-border" />
-                    <div className="h-9 w-24 rounded-md bg-muted/80 border border-border" />
+                    <div className="h-9 flex-1 rounded-md bg-muted border border-border flex items-center px-3">
+                      <span className="text-xs text-muted-foreground">Jan 2021</span>
+                    </div>
+                    <div className="h-9 w-24 rounded-md bg-muted border border-border flex items-center px-3">
+                      <span className="text-xs text-muted-foreground">Present</span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-2 mt-2">
-                  <div className="h-9 w-28 rounded-md bg-primary/20 flex items-center justify-center">
-                    <Sparkles className="h-3.5 w-3.5 text-primary/60" />
+
+                {/* AI Buttons */}
+                <div className="flex gap-2 pt-1">
+                  <div className="h-8 px-3 rounded-md bg-primary/15 border border-primary/30 flex items-center gap-1.5">
+                    <Sparkles className="h-3 w-3 text-primary" />
+                    <span className="text-[10px] font-medium text-primary">AI Improve</span>
                   </div>
-                  <div className="h-9 w-24 rounded-md bg-muted/80 border border-border" />
+                  <div className="h-8 px-3 rounded-md bg-muted border border-border flex items-center">
+                    <span className="text-[10px] text-muted-foreground">+ Add Section</span>
+                  </div>
                 </div>
               </div>
-              {/* Right preview */}
-              <div className="flex-1 flex items-center justify-center bg-muted/30 p-6">
-                <div className="w-full max-w-[280px] bg-card rounded-lg shadow-lg border border-border p-5 space-y-3">
-                  <div className="flex gap-3 items-start">
-                    <div className="w-10 h-10 rounded-lg bg-primary/25 shrink-0 flex items-center justify-center">
-                      <FileText className="h-4 w-4 text-primary/50" />
-                    </div>
-                    <div className="space-y-1.5 flex-1">
-                      <div className="h-3.5 w-3/4 rounded bg-foreground/20" />
-                      <div className="h-2.5 w-1/2 rounded bg-muted-foreground/25" />
-                    </div>
+
+              {/* Right panel — resume preview */}
+              <div className="flex-1 flex items-center justify-center bg-muted/40 p-6">
+                <div className="w-full max-w-[300px] bg-card rounded-lg shadow-xl border border-border p-6 space-y-3.5">
+                  {/* Header */}
+                  <div className="text-center space-y-1 pb-2 border-b border-border">
+                    <p className="text-sm font-bold text-foreground">John Anderson</p>
+                    <p className="text-[10px] text-muted-foreground">Software Engineer · San Francisco, CA</p>
+                    <p className="text-[9px] text-muted-foreground/70">john@example.com · (555) 123-4567</p>
                   </div>
-                  <div className="h-px bg-border" />
+
+                  {/* Summary */}
                   <div className="space-y-1.5">
-                    <div className="h-2.5 w-14 rounded bg-primary/25" />
-                    <div className="h-2 w-full rounded bg-muted-foreground/15" />
-                    <div className="h-2 w-5/6 rounded bg-muted-foreground/15" />
-                    <div className="h-2 w-4/6 rounded bg-muted-foreground/15" />
+                    <p className="text-[9px] font-bold text-primary uppercase tracking-wider">Summary</p>
+                    <div className="space-y-1">
+                      <div className="h-1.5 w-full rounded-full bg-muted-foreground/20" />
+                      <div className="h-1.5 w-[90%] rounded-full bg-muted-foreground/20" />
+                      <div className="h-1.5 w-[70%] rounded-full bg-muted-foreground/20" />
+                    </div>
                   </div>
-                  <div className="h-px bg-border" />
+
+                  {/* Experience */}
+                  <div className="space-y-2">
+                    <p className="text-[9px] font-bold text-primary uppercase tracking-wider">Experience</p>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[10px] font-semibold text-foreground/80">Senior Developer</p>
+                        <p className="text-[8px] text-muted-foreground">2021–Present</p>
+                      </div>
+                      <p className="text-[9px] text-muted-foreground/70">TechCorp Inc.</p>
+                      <div className="space-y-0.5 pl-2 border-l-2 border-primary/20">
+                        <div className="h-1.5 w-full rounded-full bg-muted-foreground/15" />
+                        <div className="h-1.5 w-[85%] rounded-full bg-muted-foreground/15" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[10px] font-semibold text-foreground/80">Frontend Engineer</p>
+                        <p className="text-[8px] text-muted-foreground">2019–2021</p>
+                      </div>
+                      <p className="text-[9px] text-muted-foreground/70">StartupXYZ</p>
+                      <div className="space-y-0.5 pl-2 border-l-2 border-primary/20">
+                        <div className="h-1.5 w-full rounded-full bg-muted-foreground/15" />
+                        <div className="h-1.5 w-[75%] rounded-full bg-muted-foreground/15" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skills */}
                   <div className="space-y-1.5">
-                    <div className="h-2.5 w-20 rounded bg-primary/25" />
-                    <div className="flex justify-between">
-                      <div className="h-2.5 w-28 rounded bg-foreground/15" />
-                      <div className="h-2 w-14 rounded bg-muted-foreground/20" />
+                    <p className="text-[9px] font-bold text-primary uppercase tracking-wider">Skills</p>
+                    <div className="flex flex-wrap gap-1">
+                      {["React", "TypeScript", "Node.js", "AWS", "Python"].map((s) => (
+                        <span key={s} className="px-2 py-0.5 rounded-full bg-primary/10 text-[8px] font-medium text-primary">
+                          {s}
+                        </span>
+                      ))}
                     </div>
-                    <div className="h-2 w-full rounded bg-muted-foreground/12" />
-                    <div className="h-2 w-5/6 rounded bg-muted-foreground/12" />
-                    <div className="flex justify-between mt-1">
-                      <div className="h-2.5 w-24 rounded bg-foreground/15" />
-                      <div className="h-2 w-12 rounded bg-muted-foreground/20" />
-                    </div>
-                    <div className="h-2 w-full rounded bg-muted-foreground/12" />
-                    <div className="h-2 w-3/4 rounded bg-muted-foreground/12" />
                   </div>
-                  <div className="h-px bg-border" />
-                  <div className="flex flex-wrap gap-1.5">
-                    <div className="h-5 w-14 rounded-full bg-primary/15" />
-                    <div className="h-5 w-16 rounded-full bg-primary/15" />
-                    <div className="h-5 w-12 rounded-full bg-primary/15" />
-                    <div className="h-5 w-14 rounded-full bg-primary/15" />
+
+                  {/* ATS Score badge */}
+                  <div className="flex items-center justify-center pt-1">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-success/10 border border-success/20">
+                      <div className="w-2 h-2 rounded-full bg-success" />
+                      <span className="text-[9px] font-semibold text-success">ATS Score: 92/100</span>
+                    </div>
                   </div>
                 </div>
               </div>
