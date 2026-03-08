@@ -56,8 +56,8 @@ function Hero() {
           <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/5 overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/30">
               <div className="w-3 h-3 rounded-full bg-destructive/60" />
-              <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-              <div className="w-3 h-3 rounded-full bg-green-400/60" />
+              <div className="w-3 h-3 rounded-full bg-accent/60" />
+              <div className="w-3 h-3 rounded-full bg-primary/40" />
               <span className="ml-2 text-xs text-muted-foreground">ResumeAI Editor</span>
             </div>
             <div className="flex h-[380px] md:h-[460px]">
