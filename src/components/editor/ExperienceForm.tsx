@@ -1,29 +1,25 @@
+/**
+ * ExperienceForm — with AI bullet generation and individual bullet improvement.
+ */
 import { ExperienceItem } from "@/types/resume";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2, GripVertical } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Trash2 } from "lucide-react";
+import { BulletGenerator } from "@/components/ai/BulletGenerator";
+import { BulletImprover } from "@/components/ai/BulletImprover";
 
 interface Props {
   items: ExperienceItem[];
   onChange: (items: ExperienceItem[]) => void;
 }
 
-function makeId() {
-  return crypto.randomUUID();
-}
+function makeId() { return crypto.randomUUID(); }
 
 const emptyItem: () => ExperienceItem = () => ({
-  id: makeId(),
-  company: "",
-  position: "",
-  startDate: "",
-  endDate: "",
-  current: false,
-  bullets: [""],
+  id: makeId(), company: "", position: "", startDate: "", endDate: "", current: false, bullets: [""],
 });
 
 export function ExperienceForm({ items, onChange }: Props) {
@@ -33,21 +29,13 @@ export function ExperienceForm({ items, onChange }: Props) {
     onChange(items.map((i) => (i.id === id ? { ...i, [field]: value } : i)));
   };
   const updateBullet = (id: string, idx: number, value: string) => {
-    onChange(
-      items.map((i) =>
-        i.id === id ? { ...i, bullets: i.bullets.map((b, j) => (j === idx ? value : b)) } : i
-      )
-    );
+    onChange(items.map((i) => i.id === id ? { ...i, bullets: i.bullets.map((b, j) => j === idx ? value : b) } : i));
   };
-  const addBullet = (id: string) => {
-    onChange(items.map((i) => (i.id === id ? { ...i, bullets: [...i.bullets, ""] } : i)));
+  const addBullet = (id: string, text = "") => {
+    onChange(items.map((i) => i.id === id ? { ...i, bullets: [...i.bullets, text] } : i));
   };
   const removeBullet = (id: string, idx: number) => {
-    onChange(
-      items.map((i) =>
-        i.id === id ? { ...i, bullets: i.bullets.filter((_, j) => j !== idx) } : i
-      )
-    );
+    onChange(items.map((i) => i.id === id ? { ...i, bullets: i.bullets.filter((_, j) => j !== idx) } : i));
   };
 
   return (
@@ -89,10 +77,19 @@ export function ExperienceForm({ items, onChange }: Props) {
               <Checkbox checked={item.current} onCheckedChange={(c) => update(item.id, "current", !!c)} />
               <Label className="text-xs text-muted-foreground">Currently working here</Label>
             </div>
+
+            {/* Bullet Points with AI */}
             <div className="space-y-2">
-              <Label className="text-xs">Bullet Points</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-xs">Bullet Points</Label>
+                <BulletGenerator
+                  jobTitle={item.position}
+                  company={item.company}
+                  onAddBullet={(b) => addBullet(item.id, b)}
+                />
+              </div>
               {item.bullets.map((bullet, idx) => (
-                <div key={idx} className="flex items-center gap-2">
+                <div key={idx} className="flex items-center gap-1">
                   <span className="text-muted-foreground text-xs">•</span>
                   <Input
                     className="h-8 text-sm flex-1"
@@ -100,8 +97,16 @@ export function ExperienceForm({ items, onChange }: Props) {
                     onChange={(e) => updateBullet(item.id, idx, e.target.value)}
                     placeholder="Describe your achievement..."
                   />
+                  {/* AI improve button for non-empty bullets */}
+                  {bullet.trim() && (
+                    <BulletImprover
+                      bullet={bullet}
+                      jobTitle={item.position}
+                      onAccept={(improved) => updateBullet(item.id, idx, improved)}
+                    />
+                  )}
                   {item.bullets.length > 1 && (
-                    <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => removeBullet(item.id, idx)}>
+                    <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => removeBullet(item.id, idx)}>
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   )}
