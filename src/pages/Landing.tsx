@@ -56,50 +56,88 @@ function Hero() {
           <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/5 overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/30">
               <div className="w-3 h-3 rounded-full bg-destructive/60" />
-              <div className="w-3 h-3 rounded-full bg-warning/60" />
-              <div className="w-3 h-3 rounded-full bg-success/60" />
+              <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
+              <div className="w-3 h-3 rounded-full bg-green-400/60" />
               <span className="ml-2 text-xs text-muted-foreground">ResumeAI Editor</span>
             </div>
-            <div className="flex h-[340px] md:h-[420px]">
-              {/* Left panel mock */}
-              <div className="w-2/5 border-r border-border p-6 space-y-4 hidden md:block">
-                <div className="h-3 w-24 rounded bg-primary/20" />
-                <div className="space-y-2">
-                  <div className="h-8 rounded bg-muted" />
-                  <div className="h-8 rounded bg-muted" />
+            <div className="flex h-[380px] md:h-[460px]">
+              {/* Left panel — form mock */}
+              <div className="w-2/5 border-r border-border p-5 space-y-4 hidden md:block overflow-hidden">
+                <div className="h-3 w-28 rounded bg-primary/25" />
+                <div className="space-y-2.5">
+                  <div className="h-9 rounded-md bg-muted border border-border" />
+                  <div className="h-9 rounded-md bg-muted border border-border" />
+                  <div className="flex gap-2">
+                    <div className="h-9 flex-1 rounded-md bg-muted border border-border" />
+                    <div className="h-9 flex-1 rounded-md bg-muted border border-border" />
+                  </div>
                 </div>
-                <div className="h-3 w-20 rounded bg-primary/20 mt-4" />
-                <div className="h-16 rounded bg-muted" />
-                <div className="flex gap-2 mt-4">
-                  <div className="h-8 w-20 rounded bg-primary/15" />
-                  <div className="h-8 w-20 rounded bg-muted" />
+                <div className="h-3 w-24 rounded bg-primary/25 mt-3" />
+                <div className="h-20 rounded-md bg-muted border border-border" />
+                <div className="h-3 w-20 rounded bg-primary/25 mt-3" />
+                <div className="space-y-2">
+                  <div className="h-9 rounded-md bg-muted border border-border" />
+                  <div className="flex gap-2">
+                    <div className="h-9 flex-1 rounded-md bg-muted border border-border" />
+                    <div className="h-9 w-24 rounded-md bg-muted border border-border" />
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <div className="h-9 w-28 rounded-md bg-primary/20 flex items-center justify-center">
+                    <Sparkles className="h-3.5 w-3.5 text-primary/50" />
+                  </div>
+                  <div className="h-9 w-24 rounded-md bg-muted border border-border" />
                 </div>
               </div>
-              {/* Right preview mock */}
-              <div className="flex-1 flex items-center justify-center bg-muted/20 p-8">
-                <div className="w-full max-w-[280px] bg-card rounded-lg shadow-md border border-border p-5 space-y-3">
-                  <div className="flex gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/20 shrink-0" />
+              {/* Right — resume preview mock */}
+              <div className="flex-1 flex items-center justify-center bg-muted/20 p-6">
+                <div className="w-full max-w-[300px] bg-card rounded-lg shadow-lg border border-border p-6 space-y-3.5">
+                  {/* Header */}
+                  <div className="flex gap-3 items-start">
+                    <div className="w-11 h-11 rounded-lg bg-primary/20 shrink-0 flex items-center justify-center">
+                      <FileText className="h-5 w-5 text-primary/40" />
+                    </div>
                     <div className="space-y-1.5 flex-1">
-                      <div className="h-3 w-3/4 rounded bg-foreground/15" />
-                      <div className="h-2 w-1/2 rounded bg-muted-foreground/20" />
+                      <div className="h-3.5 w-3/4 rounded bg-foreground/15" />
+                      <div className="h-2.5 w-1/2 rounded bg-muted-foreground/20" />
                     </div>
                   </div>
                   <div className="h-px bg-border" />
+                  {/* Summary */}
                   <div className="space-y-1.5">
-                    <div className="h-2 w-full rounded bg-muted-foreground/15" />
-                    <div className="h-2 w-5/6 rounded bg-muted-foreground/15" />
-                    <div className="h-2 w-4/6 rounded bg-muted-foreground/15" />
+                    <div className="h-2.5 w-16 rounded bg-primary/20" />
+                    <div className="h-2 w-full rounded bg-muted-foreground/12" />
+                    <div className="h-2 w-5/6 rounded bg-muted-foreground/12" />
+                    <div className="h-2 w-4/6 rounded bg-muted-foreground/12" />
                   </div>
                   <div className="h-px bg-border" />
+                  {/* Experience */}
                   <div className="space-y-1.5">
-                    <div className="h-2 w-full rounded bg-muted-foreground/15" />
-                    <div className="h-2 w-3/4 rounded bg-muted-foreground/15" />
+                    <div className="h-2.5 w-20 rounded bg-primary/20" />
+                    <div className="flex justify-between items-center">
+                      <div className="h-2.5 w-28 rounded bg-foreground/12" />
+                      <div className="h-2 w-16 rounded bg-muted-foreground/15" />
+                    </div>
+                    <div className="h-2 w-full rounded bg-muted-foreground/10" />
+                    <div className="h-2 w-5/6 rounded bg-muted-foreground/10" />
+                    <div className="flex justify-between items-center mt-1">
+                      <div className="h-2.5 w-24 rounded bg-foreground/12" />
+                      <div className="h-2 w-14 rounded bg-muted-foreground/15" />
+                    </div>
+                    <div className="h-2 w-full rounded bg-muted-foreground/10" />
+                    <div className="h-2 w-3/4 rounded bg-muted-foreground/10" />
                   </div>
-                  <div className="flex gap-1.5 pt-1">
-                    <div className="h-4 w-12 rounded-full bg-primary/15" />
-                    <div className="h-4 w-14 rounded-full bg-primary/15" />
-                    <div className="h-4 w-10 rounded-full bg-primary/15" />
+                  <div className="h-px bg-border" />
+                  {/* Skills */}
+                  <div className="space-y-1.5">
+                    <div className="h-2.5 w-12 rounded bg-primary/20" />
+                    <div className="flex flex-wrap gap-1.5">
+                      <div className="h-5 w-14 rounded-full bg-primary/10" />
+                      <div className="h-5 w-16 rounded-full bg-primary/10" />
+                      <div className="h-5 w-12 rounded-full bg-primary/10" />
+                      <div className="h-5 w-18 rounded-full bg-primary/10" />
+                      <div className="h-5 w-14 rounded-full bg-primary/10" />
+                    </div>
                   </div>
                 </div>
               </div>
