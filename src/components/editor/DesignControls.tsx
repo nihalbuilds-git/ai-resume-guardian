@@ -1,12 +1,16 @@
 /**
  * Design controls panel: template switcher, color picker, font selector, spacing.
- * Shown as a tab in the editor.
+ * Includes plan-based template gating.
  */
 import { ResumeData } from "@/types/resume";
 import { TEMPLATE_LIST, COLOR_PRESETS, FONT_PAIRS, SPACING_OPTIONS, hslToCSS } from "./templates/template-config";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { usePlanLimits } from "@/hooks/use-plan-limits";
+import { UpgradeModal } from "@/components/UpgradeModal";
+import { Lock } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
   data: ResumeData;
@@ -14,29 +18,47 @@ interface Props {
 }
 
 export function DesignControls({ data, onUpdate }: Props) {
+  const { canUseTemplate } = usePlanLimits();
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
   return (
     <div className="space-y-6">
       {/* Template Switcher */}
       <div>
         <Label className="text-sm font-semibold mb-2 block">Template</Label>
         <div className="grid grid-cols-2 gap-2">
-          {TEMPLATE_LIST.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => onUpdate("template", t.id)}
-              className={cn(
-                "border rounded-lg p-3 text-left transition-all text-xs",
-                data.template === t.id
-                  ? "border-primary bg-accent ring-1 ring-primary"
-                  : "border-border hover:border-primary/40"
-              )}
-            >
-              <div className="font-semibold text-foreground">{t.name}</div>
-              <div className="text-muted-foreground mt-0.5">{t.description}</div>
-            </button>
-          ))}
+          {TEMPLATE_LIST.map((t) => {
+            const locked = !canUseTemplate(t.id);
+            return (
+              <button
+                key={t.id}
+                onClick={() => {
+                  if (locked) {
+                    setShowUpgrade(true);
+                    return;
+                  }
+                  onUpdate("template", t.id);
+                }}
+                className={cn(
+                  "border rounded-lg p-3 text-left transition-all text-xs relative",
+                  data.template === t.id
+                    ? "border-primary bg-accent ring-1 ring-primary"
+                    : "border-border hover:border-primary/40",
+                  locked && "opacity-70"
+                )}
+              >
+                <div className="font-semibold text-foreground flex items-center gap-1">
+                  {t.name}
+                  {locked && <Lock className="h-3 w-3 text-muted-foreground" />}
+                </div>
+                <div className="text-muted-foreground mt-0.5">{t.description}</div>
+                {locked && <span className="text-[10px] text-primary font-medium">PRO</span>}
+              </button>
+            );
+          })}
         </div>
       </div>
+      <UpgradeModal open={showUpgrade} onOpenChange={setShowUpgrade} reason="template" />
 
       {/* Color Picker */}
       <div>
