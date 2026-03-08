@@ -56,6 +56,72 @@ export type Database = {
         }
         Relationships: []
       }
+      resumes: {
+        Row: {
+          ats_score: number | null
+          certifications: Json
+          color_theme: string
+          created_at: string
+          education: Json
+          experience: Json
+          font_pair: string
+          id: string
+          last_edited: string
+          personal_info: Json
+          projects: Json
+          section_order: string[]
+          skills: Json
+          spacing: string
+          summary: string
+          template: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ats_score?: number | null
+          certifications?: Json
+          color_theme?: string
+          created_at?: string
+          education?: Json
+          experience?: Json
+          font_pair?: string
+          id?: string
+          last_edited?: string
+          personal_info?: Json
+          projects?: Json
+          section_order?: string[]
+          skills?: Json
+          spacing?: string
+          summary?: string
+          template?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ats_score?: number | null
+          certifications?: Json
+          color_theme?: string
+          created_at?: string
+          education?: Json
+          experience?: Json
+          font_pair?: string
+          id?: string
+          last_edited?: string
+          personal_info?: Json
+          projects?: Json
+          section_order?: string[]
+          skills?: Json
+          spacing?: string
+          summary?: string
+          template?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
