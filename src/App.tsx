@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ResetPassword from "./pages/ResetPassword";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import ResumeEditor from "./pages/ResumeEditor";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
             <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/dashboard/editor/:id" element={<ProtectedRoute><ResumeEditor /></ProtectedRoute>} />
             <Route path="/dashboard/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />

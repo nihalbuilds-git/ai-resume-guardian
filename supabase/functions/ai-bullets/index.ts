@@ -1,13 +1,45 @@
 /**
  * AI Bullet Generator — generates 5 ATS-friendly bullet points for a job experience.
- * Uses Lovable AI gateway with streaming SSE response.
  */
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.98.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+async function incrementAICredits(authHeader: string | null) {
+  if (!authHeader) return;
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabase = createClient(supabaseUrl, serviceRoleKey);
+  
+  // Get user from their JWT
+  const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!);
+  const token = authHeader.replace("Bearer ", "");
+  const { data: { user } } = await anonClient.auth.getUser(token);
+  if (!user) return;
+  
+  await supabase.rpc("increment_ai_credits" as any, { p_user_id: user.id }).catch(() => {
+    // Fallback: direct update
+    supabase.from("profiles").update({ ai_credits_used: supabase.rpc("increment_ai_credits" as any, {}) } as any).eq("user_id", user.id);
+  });
+  
+  // Simple increment
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("ai_credits_used")
+    .eq("user_id", user.id)
+    .single();
+  
+  if (profile) {
+    await supabase
+      .from("profiles")
+      .update({ ai_credits_used: (profile.ai_credits_used || 0) + 1 })
+      .eq("user_id", user.id);
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -88,6 +120,9 @@ Return ONLY a JSON array of 5 strings, no other text.`
         bullets = [];
       }
     }
+
+    // Increment AI credits after successful call
+    await incrementAICredits(req.headers.get("authorization")).catch(console.error);
 
     return new Response(JSON.stringify({ bullets }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

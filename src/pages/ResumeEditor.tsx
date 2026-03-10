@@ -18,8 +18,10 @@ import { AICreditsIndicator } from "@/components/ai/AICreditsIndicator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Save, ZoomIn, ZoomOut, Loader2, Undo2, Redo2 } from "lucide-react";
+import { ArrowLeft, Save, ZoomIn, ZoomOut, Loader2, Undo2, Redo2, Menu, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const MAX_HISTORY = 50;
 
@@ -28,12 +30,14 @@ export default function ResumeEditor() {
   const navigate = useNavigate();
   const { data: resume, isLoading } = useResume(id);
   const updateResume = useUpdateResume();
+  const isMobile = useIsMobile();
 
   // Local editable state
   const [localData, setLocalData] = useState<ResumeData | null>(null);
   const [zoom, setZoom] = useState(0.55);
   const [saving, setSaving] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<ResumeData[]>([]);
@@ -154,17 +158,65 @@ export default function ResumeEditor() {
     );
   }
 
+  const formContent = (
+    <div className="p-4">
+      <Tabs defaultValue="personal" className="w-full">
+        <TabsList className="w-full grid grid-cols-3 md:grid-cols-6 mb-4">
+          <TabsTrigger value="personal" className="text-xs">Personal</TabsTrigger>
+          <TabsTrigger value="experience" className="text-xs">Experience</TabsTrigger>
+          <TabsTrigger value="education" className="text-xs">Education</TabsTrigger>
+          <TabsTrigger value="skills" className="text-xs">Skills</TabsTrigger>
+          <TabsTrigger value="projects" className="text-xs">Projects</TabsTrigger>
+          <TabsTrigger value="design" className="text-xs">Design</TabsTrigger>
+        </TabsList>
+        <TabsContent value="personal" className="space-y-6">
+          <PersonalInfoForm data={localData.personal_info} onChange={(v) => updateField("personal_info", v)} />
+          <SummaryForm value={localData.summary} onChange={(v) => updateField("summary", v)} />
+        </TabsContent>
+        <TabsContent value="experience">
+          <ExperienceForm items={localData.experience} onChange={(v) => updateField("experience", v)} />
+        </TabsContent>
+        <TabsContent value="education">
+          <EducationForm items={localData.education} onChange={(v) => updateField("education", v)} />
+        </TabsContent>
+        <TabsContent value="skills">
+          <SkillsForm items={localData.skills} onChange={(v) => updateField("skills", v)} />
+        </TabsContent>
+        <TabsContent value="projects">
+          <ProjectsForm items={localData.projects} onChange={(v) => updateField("projects", v)} />
+        </TabsContent>
+        <TabsContent value="design">
+          <DesignControls data={localData} onUpdate={updateField} />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+
   return (
     <div className="flex flex-col h-screen bg-background">
       {/* Top Bar */}
-      <header className="flex items-center justify-between h-12 px-4 border-b border-border bg-card shrink-0">
-        <div className="flex items-center gap-3">
-          <Button size="icon" variant="ghost" onClick={() => navigate("/dashboard")}>
+      <header className="flex items-center justify-between h-12 px-2 md:px-4 border-b border-border bg-card shrink-0 gap-1">
+        <div className="flex items-center gap-1 md:gap-3 min-w-0">
+          <Button size="icon" variant="ghost" onClick={() => navigate("/dashboard")} className="shrink-0">
             <ArrowLeft className="h-4 w-4" />
           </Button>
+          {isMobile && (
+            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+              <SheetTrigger asChild>
+                <Button size="icon" variant="ghost" className="shrink-0">
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[90vw] max-w-[400px] p-0">
+                <ScrollArea className="h-full">
+                  {formContent}
+                </ScrollArea>
+              </SheetContent>
+            </Sheet>
+          )}
           {editingTitle ? (
             <Input
-              className="h-8 w-60 text-sm font-medium"
+              className="h-8 w-40 md:w-60 text-sm font-medium"
               value={localData.title}
               onChange={(e) => updateField("title", e.target.value)}
               onBlur={() => setEditingTitle(false)}
@@ -172,104 +224,60 @@ export default function ResumeEditor() {
               autoFocus
             />
           ) : (
-            <button onClick={() => setEditingTitle(true)} className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+            <button onClick={() => setEditingTitle(true)} className="text-sm font-medium text-foreground hover:text-primary transition-colors truncate max-w-[120px] md:max-w-none">
               {localData.title}
             </button>
           )}
         </div>
-        <div className="flex items-center gap-1.5">
-          <AICreditsIndicator />
-          <ATSChecker data={localData} />
-          <TailorResume
-            data={localData}
-            onApplySummary={(s) => updateField("summary", s)}
-            onAddSkills={(skills) => updateField("skills", [...localData.skills, ...skills.filter((s) => !localData.skills.includes(s))])}
-          />
-          <CoverLetterModal data={localData} />
-          <div className="w-px h-6 bg-border" />
-          <Button size="icon" variant="ghost" onClick={undo} disabled={historyIndex <= 0} title="Undo">
-            <Undo2 className="h-4 w-4" />
-          </Button>
-          <Button size="icon" variant="ghost" onClick={redo} disabled={historyIndex >= history.length - 1} title="Redo">
-            <Redo2 className="h-4 w-4" />
-          </Button>
-          <div className="flex items-center gap-1 border border-border rounded-md">
-            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setZoom((z) => Math.max(0.3, z - 0.1))}>
-              <ZoomOut className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-1 shrink-0">
+          <div className="hidden md:flex items-center gap-1">
+            <AICreditsIndicator />
+            <ATSChecker data={localData} />
+            <TailorResume
+              data={localData}
+              onApplySummary={(s) => updateField("summary", s)}
+              onAddSkills={(skills) => updateField("skills", [...localData.skills, ...skills.filter((s) => !localData.skills.includes(s))])}
+            />
+            <CoverLetterModal data={localData} />
+            <div className="w-px h-6 bg-border" />
+            <Button size="icon" variant="ghost" onClick={undo} disabled={historyIndex <= 0} title="Undo">
+              <Undo2 className="h-4 w-4" />
             </Button>
-            <span className="text-xs text-muted-foreground w-10 text-center">{Math.round(zoom * 100)}%</span>
-            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setZoom((z) => Math.min(1, z + 0.1))}>
-              <ZoomIn className="h-3.5 w-3.5" />
+            <Button size="icon" variant="ghost" onClick={redo} disabled={historyIndex >= history.length - 1} title="Redo">
+              <Redo2 className="h-4 w-4" />
             </Button>
+            <div className="flex items-center gap-1 border border-border rounded-md">
+              <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setZoom((z) => Math.max(0.3, z - 0.1))}>
+                <ZoomOut className="h-3.5 w-3.5" />
+              </Button>
+              <span className="text-xs text-muted-foreground w-10 text-center">{Math.round(zoom * 100)}%</span>
+              <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setZoom((z) => Math.min(1, z + 0.1))}>
+                <ZoomIn className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           </div>
           <PDFExportButton data={localData} />
           <Button size="sm" onClick={handleSave} disabled={saving}>
             {saving ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : <Save className="mr-1 h-3.5 w-3.5" />}
-            {saving ? "Saving..." : "Save"}
+            <span className="hidden md:inline">{saving ? "Saving..." : "Save"}</span>
           </Button>
         </div>
       </header>
 
       {/* Split Editor */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left: Form Tabs */}
-        <div className="w-[480px] shrink-0 border-r border-border">
-          <ScrollArea className="h-full">
-            <div className="p-4">
-              <Tabs defaultValue="personal" className="w-full">
-                <TabsList className="w-full grid grid-cols-6 mb-4">
-                  <TabsTrigger value="personal" className="text-xs">Personal</TabsTrigger>
-                  <TabsTrigger value="experience" className="text-xs">Experience</TabsTrigger>
-                  <TabsTrigger value="education" className="text-xs">Education</TabsTrigger>
-                  <TabsTrigger value="skills" className="text-xs">Skills</TabsTrigger>
-                  <TabsTrigger value="projects" className="text-xs">Projects</TabsTrigger>
-                  <TabsTrigger value="design" className="text-xs">Design</TabsTrigger>
-                </TabsList>
-                <TabsContent value="personal" className="space-y-6">
-                  <PersonalInfoForm
-                    data={localData.personal_info}
-                    onChange={(v) => updateField("personal_info", v)}
-                  />
-                  <SummaryForm
-                    value={localData.summary}
-                    onChange={(v) => updateField("summary", v)}
-                  />
-                </TabsContent>
-                <TabsContent value="experience">
-                  <ExperienceForm
-                    items={localData.experience}
-                    onChange={(v) => updateField("experience", v)}
-                  />
-                </TabsContent>
-                <TabsContent value="education">
-                  <EducationForm
-                    items={localData.education}
-                    onChange={(v) => updateField("education", v)}
-                  />
-                </TabsContent>
-                <TabsContent value="skills">
-                  <SkillsForm
-                    items={localData.skills}
-                    onChange={(v) => updateField("skills", v)}
-                  />
-                </TabsContent>
-                <TabsContent value="projects">
-                  <ProjectsForm
-                    items={localData.projects}
-                    onChange={(v) => updateField("projects", v)}
-                  />
-                </TabsContent>
-                <TabsContent value="design">
-                  <DesignControls data={localData} onUpdate={updateField} />
-                </TabsContent>
-              </Tabs>
-            </div>
-          </ScrollArea>
-        </div>
+        {/* Left: Form Tabs — hidden on mobile (use Sheet instead) */}
+        {!isMobile && (
+          <div className="w-[480px] shrink-0 border-r border-border">
+            <ScrollArea className="h-full">
+              {formContent}
+            </ScrollArea>
+          </div>
+        )}
 
         {/* Right: Live Preview */}
         <div className="flex-1 overflow-auto">
-          <ResumePreview data={localData} zoom={zoom} />
+          <ResumePreview data={localData} zoom={isMobile ? 0.4 : zoom} />
         </div>
       </div>
     </div>

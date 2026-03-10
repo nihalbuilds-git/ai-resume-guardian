@@ -4,10 +4,18 @@ import { FileText, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function Navbar() {
-  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
+  const [dark, setDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved) return saved === "dark";
+      return document.documentElement.classList.contains("dark");
+    }
+    return false;
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
   return (
