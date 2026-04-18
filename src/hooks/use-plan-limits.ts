@@ -7,10 +7,10 @@ import { useResumes } from "@/hooks/use-resumes";
 
 export const PLAN_LIMITS = {
   free: {
-    maxResumes: 1,
+    maxResumes: Infinity, // Unlimited for testing
     maxAICredits: 5,
-    templates: ["classic", "minimal", "ats"],
-    features: ["pdf_export"],
+    templates: ["classic", "minimal", "ats", "modern"], // All templates for testing
+    features: ["pdf_export", "cover_letter", "ats_checker", "tailor_resume"], // All features for testing
   },
   pro: {
     maxResumes: Infinity,
